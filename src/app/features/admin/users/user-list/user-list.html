@@ -1,44 +1,33 @@
-<div class="container mx-auto p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Manage Users</h1>
-        <!-- Admin can register new users via register page if needed, or just manage existing ones -->
-    </div>
-
-    <div class="bg-white shadow-md rounded my-6 overflow-x-auto">
-        <table class="min-w-full table-auto">
-            <thead>
-                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th class="py-3 px-6 text-left">Name</th>
-                    <th class="py-3 px-6 text-left">Email</th>
-                    <th class="py-3 px-6 text-left">Role</th>
-                    <th class="py-3 px-6 text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-600 text-sm font-light">
-                <tr *ngFor="let user of users" class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 text-left whitespace-nowrap font-medium">{{ user.name }}</td>
-                    <td class="py-3 px-6 text-left">{{ user.email }}</td>
-                    <td class="py-3 px-6 text-left">
-                        <select (change)="changeRole(user, $event)"
-                            class="bg-white border border-gray-300 text-gray-700 py-1 px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="ADMIN" [selected]="user.role === 'ADMIN'">ADMIN</option>
-                            <option value="COORDINATOR" [selected]="user.role === 'COORDINATOR'">COORDINATOR</option>
-                            <option value="PARTICIPANT" [selected]="user.role === 'PARTICIPANT'">PARTICIPANT</option>
-                        </select>
-                    </td>
-                    <td class="py-3 px-6 text-center">
-                        <div class="flex item-center justify-center">
-                            <span (click)="deleteUser(user.id)"
-                                class="w-4 transform hover:text-red-500 hover:scale-110 cursor-pointer">
-                                Delete
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr *ngIf="users.length === 0">
-                    <td colspan="4" class="py-3 px-6 text-center">No users found.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<th class="py-3 px-6 text-left">Email</th>
+<th class="py-3 px-6 text-left">Role</th>
+<th class="py-3 px-6 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="text-gray-600 text-sm font-light">
+    <tr *ngFor="let user of users" class="border-b border-gray-200 hover:bg-gray-100">
+        <td class="py-3 px-6 text-left whitespace-nowrap font-medium">{{ user.name }}</td>
+        <td class="py-3 px-6 text-left">{{ user.email }}</td>
+        <td class="py-3 px-6 text-left">
+            <select (change)="changeRole(user, $event)"
+                class="bg-white border border-gray-300 text-gray-700 py-1 px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                <option value="ADMIN" [selected]="user.role === 'ADMIN'">ADMIN</option>
+                <option value="COORDINATOR" [selected]="user.role === 'COORDINATOR'">COORDINATOR</option>
+                <option value="PARTICIPANT" [selected]="user.role === 'PARTICIPANT'">PARTICIPANT</option>
+            </select>
+        </td>
+        <td class="py-3 px-6 text-center">
+            <div class="flex item-center justify-center">
+                <span (click)="deleteUser(user.id)"
+                    class="w-4 transform hover:text-red-500 hover:scale-110 cursor-pointer">
+                    Delete
+                </span>
+            </div>
+        </td>
+    </tr>
+    <tr *ngIf="users.length === 0">
+        <td colspan="4" class="py-3 px-6 text-center">No users found.</td>
+    </tr>
+</tbody>
+</table>
+</div>
 </div>

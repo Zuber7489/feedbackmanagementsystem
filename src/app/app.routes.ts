@@ -7,6 +7,7 @@ import { CourseFormComponent } from './features/admin/courses/course-form/course
 import { FacultyListComponent } from './features/admin/faculties/faculty-list/faculty-list';
 import { FacultyFormComponent } from './features/admin/faculties/faculty-form/faculty-form';
 import { UserListComponent } from './features/admin/users/user-list/user-list';
+import { UserFormComponent } from './features/admin/users/user-form/user-form';
 import { ReportsComponent } from './features/admin/reports/reports';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
@@ -35,6 +36,8 @@ export const routes: Routes = [
             { path: 'faculties/new', component: FacultyFormComponent },
             { path: 'faculties/edit/:id', component: FacultyFormComponent },
             { path: 'users', component: UserListComponent },
+            { path: 'users/new', component: UserFormComponent },
+            { path: 'users/edit/:id', component: UserFormComponent },
             { path: 'reports', component: ReportsComponent },
         ]
     },
