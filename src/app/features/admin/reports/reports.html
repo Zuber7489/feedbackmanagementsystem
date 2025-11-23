@@ -1,0 +1,158 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Reports & Analytics</h1>
+
+    <!-- Tabs -->
+    <div class="flex mb-6 border-b border-gray-200">
+        <button (click)="activeTab = 'programs'" [class.border-blue-500]="activeTab === 'programs'"
+            [class.text-blue-600]="activeTab === 'programs'"
+            class="py-2 px-4 border-b-2 border-transparent hover:text-blue-500 focus:outline-none font-medium">
+            Program Summary
+        </button>
+        <button (click)="activeTab = 'defaulters'" [class.border-blue-500]="activeTab === 'defaulters'"
+            [class.text-blue-600]="activeTab === 'defaulters'"
+            class="py-2 px-4 border-b-2 border-transparent hover:text-blue-500 focus:outline-none font-medium">
+            Defaulters List
+        </button>
+        <button (click)="activeTab = 'faculty'" [class.border-blue-500]="activeTab === 'faculty'"
+            [class.text-blue-600]="activeTab === 'faculty'"
+            class="py-2 px-4 border-b-2 border-transparent hover:text-blue-500 focus:outline-none font-medium">
+            Faculty Performance
+        </button>
+    </div>
+
+    <!-- Actions -->
+    <div class="mb-4 flex justify-end">
+        <button (click)="exportToCSV()"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+            <span class="mr-2">Download CSV</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Program Summary Content -->
+    <div *ngIf="activeTab === 'programs'" class="bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Course</th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Faculty</th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Dates</th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status</th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Enrollments</th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Avg Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let program of programs">
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ getCourseTitle(program.courseId)
+                        }}</td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ getFacultyName(program.facultyId)
+                        }}</td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        {{ program.startDate | date }} - {{ program.endDate | date }}
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <span [ngClass]="{
+              'bg-green-200 text-green-900': program.status === 'COMPLETED',
+              'bg-blue-200 text-blue-900': program.status === 'SCHEDULED',
+              'bg-red-200 text-red-900': program.status === 'CANCELLED'
+            }" class="relative inline-block px-3 py-1 font-semibold leading-tight rounded-full">
+                            <span aria-hidden class="absolute inset-0 opacity-50 rounded-full"></span>
+                            <span class="relative">{{ program.status }}</span>
+                        </span>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ getEnrollmentCount(program) }}
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold text-blue-600">{{
+                        getAverageRating(program.id) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Defaulters Content -->
+    <div *ngIf="activeTab === 'defaulters'" class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div *ngIf="getDefaulters().length === 0" class="p-6 text-center text-gray-600">
+            No defaulters found (Attendance < 75%). </div>
+                <table *ngIf="getDefaulters().length > 0" class="min-w-full leading-normal">
+                    <thead>
+                        <tr>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Participant</th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Email</th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Program</th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Attendance %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of getDefaulters()">
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.user.name }}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.user.email }}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{
+                                getCourseTitle(item.program.courseId) }}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-red-600 font-bold">{{
+                                item.attendancePercentage | number:'1.0-1' }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+
+        <!-- Faculty Performance Content -->
+        <div *ngIf="activeTab === 'faculty'" class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr>
+                        <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Faculty Name</th>
+                        <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Email</th>
+                        <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Skills</th>
+                        <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Feedback Count</th>
+                        <th
+                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Avg Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of getFacultyPerformance()">
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.faculty.name }}</td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.faculty.email }}</td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.faculty.skills.join(',
+                            ') }}</td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ item.feedbackCount }}</td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm font-bold text-blue-600">{{
+                            item.averageRating | number:'1.1-1' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

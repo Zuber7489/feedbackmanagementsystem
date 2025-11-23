@@ -1,1 +1,70 @@
-<p>feedback-form works!</p>
+<div class="container mx-auto p-6">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1 class="text-2xl font-bold mb-2 text-gray-800">Program Feedback</h1>
+        <h2 class="text-xl text-gray-600 mb-6" *ngIf="course">{{ course.title }}</h2>
+
+        <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    1. How would you rate the quality of the content? (1-5)
+                </label>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Poor</span>
+                    <input type="range" min="1" max="5" step="1" formControlName="q1" class="w-full mx-4">
+                    <span class="text-sm text-gray-500">Excellent</span>
+                </div>
+                <div class="text-center font-bold text-blue-600 mt-1">{{ feedbackForm.get('q1')?.value }}</div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    2. How would you rate the instructor's knowledge? (1-5)
+                </label>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Poor</span>
+                    <input type="range" min="1" max="5" step="1" formControlName="q2" class="w-full mx-4">
+                    <span class="text-sm text-gray-500">Excellent</span>
+                </div>
+                <div class="text-center font-bold text-blue-600 mt-1">{{ feedbackForm.get('q2')?.value }}</div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    3. How practical/applicable was the training? (1-5)
+                </label>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Poor</span>
+                    <input type="range" min="1" max="5" step="1" formControlName="q3" class="w-full mx-4">
+                    <span class="text-sm text-gray-500">Excellent</span>
+                </div>
+                <div class="text-center font-bold text-blue-600 mt-1">{{ feedbackForm.get('q3')?.value }}</div>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="comments">
+                    Comments & Suggestions
+                </label>
+                <textarea id="comments" formControlName="comments" rows="4"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Please share your thoughts..."></textarea>
+                <div *ngIf="feedbackForm.get('comments')?.invalid && feedbackForm.get('comments')?.touched"
+                    class="text-red-500 text-xs italic">
+                    Comments are required.
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit" [disabled]="feedbackForm.invalid">
+                    Submit Feedback
+                </button>
+                <a routerLink="/participant"
+                    class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

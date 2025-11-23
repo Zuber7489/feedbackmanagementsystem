@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { LocalStorageService } from '../../../../core/services/local-storage.service';
-import { AuthService } from '../../../../core/services/auth.service';
-import { Program, Course, Feedback } from '../../../../core/models/models';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { Program, Course, Feedback } from '../../../core/models/models';
 
 @Component({
   selector: 'app-dashboard',

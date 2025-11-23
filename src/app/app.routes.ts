@@ -7,6 +7,7 @@ import { CourseFormComponent } from './features/admin/courses/course-form/course
 import { FacultyListComponent } from './features/admin/faculties/faculty-list/faculty-list';
 import { FacultyFormComponent } from './features/admin/faculties/faculty-form/faculty-form';
 import { UserListComponent } from './features/admin/users/user-list/user-list';
+import { ReportsComponent } from './features/admin/reports/reports';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 
@@ -14,6 +15,9 @@ import { DashboardComponent as CoordinatorDashboardComponent } from './features/
 import { ProgramListComponent } from './features/coordinator/programs/program-list/program-list';
 import { ProgramFormComponent } from './features/coordinator/programs/program-form/program-form';
 import { EnrollmentComponent } from './features/coordinator/enrollment/enrollment';
+
+import { DashboardComponent as ParticipantDashboardComponent } from './features/participant/dashboard/dashboard';
+import { FeedbackFormComponent } from './features/participant/feedback-form/feedback-form';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -31,6 +35,7 @@ export const routes: Routes = [
             { path: 'faculties/new', component: FacultyFormComponent },
             { path: 'faculties/edit/:id', component: FacultyFormComponent },
             { path: 'users', component: UserListComponent },
+            { path: 'reports', component: ReportsComponent },
         ]
     },
     {
@@ -43,6 +48,15 @@ export const routes: Routes = [
             { path: 'programs/new', component: ProgramFormComponent },
             { path: 'programs/edit/:id', component: ProgramFormComponent },
             { path: 'enrollments', component: EnrollmentComponent },
+        ]
+    },
+    {
+        path: 'participant',
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['PARTICIPANT', 'ADMIN'] },
+        children: [
+            { path: '', component: ParticipantDashboardComponent },
+            { path: 'feedback/:programId', component: FeedbackFormComponent },
         ]
     },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
