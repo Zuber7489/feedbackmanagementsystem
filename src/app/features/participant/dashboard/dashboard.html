@@ -1,0 +1,45 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8 text-gray-800">My Programs</h1>
+
+    <div *ngIf="enrolledPrograms.length === 0" class="text-gray-600 text-lg">
+        You are not enrolled in any programs yet.
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let program of enrolledPrograms"
+            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold mb-2 text-gray-800">{{ getCourseTitle(program.courseId) }}</h2>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Dates:</span> {{ program.startDate | date }} - {{ program.endDate | date
+                    }}
+                </p>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Status:</span>
+                    <span [ngClass]="{
+            'text-green-600': program.status === 'COMPLETED',
+            'text-blue-600': program.status === 'SCHEDULED',
+            'text-red-600': program.status === 'CANCELLED'
+          }" class="font-bold">
+                        {{ program.status }}
+                    </span>
+                </p>
+
+                <div class="mt-4">
+                    <a *ngIf="program.status === 'COMPLETED' && !hasSubmittedFeedback(program.id)"
+                        [routerLink]="['/participant/feedback', program.id]"
+                        class="block w-full text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Give Feedback
+                    </a>
+                    <div *ngIf="hasSubmittedFeedback(program.id)" class="text-green-600 font-bold text-center py-2">
+                        Feedback Submitted
+                    </div>
+                    <div *ngIf="program.status !== 'COMPLETED' && program.status !== 'CANCELLED'"
+                        class="text-gray-500 text-sm text-center italic">
+                        Feedback available after completion
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

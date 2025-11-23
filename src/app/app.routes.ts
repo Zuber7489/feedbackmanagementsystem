@@ -10,6 +10,11 @@ import { UserListComponent } from './features/admin/users/user-list/user-list';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 
+import { DashboardComponent as CoordinatorDashboardComponent } from './features/coordinator/dashboard/dashboard';
+import { ProgramListComponent } from './features/coordinator/programs/program-list/program-list';
+import { ProgramFormComponent } from './features/coordinator/programs/program-form/program-form';
+import { EnrollmentComponent } from './features/coordinator/enrollment/enrollment';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -26,6 +31,18 @@ export const routes: Routes = [
             { path: 'faculties/new', component: FacultyFormComponent },
             { path: 'faculties/edit/:id', component: FacultyFormComponent },
             { path: 'users', component: UserListComponent },
+        ]
+    },
+    {
+        path: 'coordinator',
+        canActivate: [authGuard, roleGuard],
+        data: { roles: ['COORDINATOR', 'ADMIN'] },
+        children: [
+            { path: '', component: CoordinatorDashboardComponent },
+            { path: 'programs', component: ProgramListComponent },
+            { path: 'programs/new', component: ProgramFormComponent },
+            { path: 'programs/edit/:id', component: ProgramFormComponent },
+            { path: 'enrollments', component: EnrollmentComponent },
         ]
     },
     { path: '', redirectTo: '/login', pathMatch: 'full' },

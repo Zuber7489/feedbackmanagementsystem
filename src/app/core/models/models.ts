@@ -25,11 +25,17 @@ export interface Faculty {
     skills: string[];
 }
 
-export type AttendanceStatus = 'REGISTERED' | 'ATTENDED' | 'NO_SHOW';
+export enum AttendanceStatus {
+    PRESENT = 'PRESENT',
+    ABSENT = 'ABSENT',
+    LATE = 'LATE',
+    ON_LEAVE = 'ON_LEAVE'
+}
 
-export interface Enrollment {
-    participantId: string;
-    attendanceStatus: AttendanceStatus;
+export interface AttendanceRecord {
+    userId: string;
+    status: AttendanceStatus;
+    date: string;
 }
 
 export type ProgramStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
@@ -37,15 +43,12 @@ export type ProgramStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
 export interface Program {
     id: string;
     courseId: string;
-    coordinatorId: string;
-    facultyIds: string[];
+    facultyId: string; // Changed from facultyIds: string[] to single facultyId as per form
     startDate: string;
     endDate: string;
-    location: string;
-    capacity: number;
     status: ProgramStatus;
-    enrollments: Enrollment[];
-    createdAt: string;
+    enrolledUserIds: string[];
+    attendance: AttendanceRecord[];
 }
 
 export interface FeedbackRatings {
