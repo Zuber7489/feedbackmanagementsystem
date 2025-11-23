@@ -1,0 +1,33 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-8 text-gray-800">Admin Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Manage Courses -->
+        <a routerLink="/admin/courses"
+            class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-blue-500">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800">Manage Courses</h2>
+            <p class="text-gray-600">Create, edit, and delete training courses.</p>
+        </a>
+
+        <!-- Manage Faculties -->
+        <a routerLink="/admin/faculties"
+            class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800">Manage Faculties</h2>
+            <p class="text-gray-600">Add and manage faculty members and their skills.</p>
+        </a>
+
+        <!-- Manage Users -->
+        <a routerLink="/admin/users"
+            class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-purple-500">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800">Manage Users</h2>
+            <p class="text-gray-600">View registered users and manage their roles.</p>
+        </a>
+
+        <!-- Reports (Placeholder for now) -->
+        <div
+            class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-yellow-500 opacity-50 cursor-not-allowed">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800">Reports</h2>
+            <p class="text-gray-600">View system reports (Coming Soon).</p>
+        </div>
+    </div>
+</div>

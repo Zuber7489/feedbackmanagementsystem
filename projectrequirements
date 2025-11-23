@@ -1,0 +1,375 @@
+
+# ✅ **Feedback Management System (FMS) — Updated Requirements (LocalStorage / SessionStorage Only)**
+
+## **1. Project Summary (Updated)**
+
+Goal: Build a Feedback Management System (FMS) to manage training courses, programs, faculties, enrolments, and participant feedback.
+
+**Technology Stack (Updated):**
+
+* **Frontend-only:** Angular 20
+* **Storage:** LocalStorage + SessionStorage
+* **Authentication:** Client-side session management
+* **No backend, no database, no APIs** — all logic implemented inside Angular services.
+
+---
+
+# **2. Actors & Roles**
+
+### **1. Training Admin (ADMIN)**
+
+* Full management of courses, faculties, programs.
+* View all reports.
+
+### **2. Training Coordinator (COORDINATOR)**
+
+* Create/modify programs, enrol participants, manage attendance.
+* View reports for their own programs.
+
+### **3. Participant (PARTICIPANT)**
+
+* View programs they are enrolled in.
+* Submit feedback.
+
+### **4. System (Client-side Services)**
+
+* Simulates automated tasks: report generation, validation.
+
+---
+
+# **3. Functional Requirements (Revised for LocalStorage)**
+
+## **3.1 Authentication (LocalStorage/SessionStorage)**
+
+* User data stored in **LocalStorage** (`users` table).
+* Login session stored in **SessionStorage** (`currentUser`).
+* Role-based access checks via Angular Guards.
+
+### Supported Flows:
+
+* Login (validate against LocalStorage).
+* Logout (clear session).
+* Registration (Admin only).
+
+---
+
+## **3.2 Course Management (LocalStorage)**
+
+Stored in: `courses` array in LocalStorage.
+
+Admin can:
+
+* Create Course
+* Edit Course
+* Delete Course
+* View Course List & Details
+
+---
+
+## **3.3 Faculty Management**
+
+Stored in: `faculties` array in LocalStorage.
+
+Admin can:
+
+* Add/update/delete faculty.
+* Add/remove skills.
+* Search faculty by skill.
+
+---
+
+## **3.4 Training Program Management**
+
+Stored in: `programs` array in LocalStorage.
+
+Fields:
+
+* courseId
+* coordinatorId
+* facultyIds[]
+* dates
+* location
+* capacity
+* status
+* participantIds[]
+
+Coordinator/Admin can:
+
+* Create/modify/delete (soft delete)
+* Enrol participants
+* Mark attendance
+* Assign faculties
+
+---
+
+## **3.5 Enrollment Management**
+
+Represented inside program object:
+
+```
+program.enrollments = [
+  { participantId, attendanceStatus }
+]
+```
+
+Attendance statuses:
+
+* REGISTERED
+* ATTENDED
+* NO_SHOW
+
+---
+
+## **3.6 Feedback Module**
+
+Stored in: `feedbacks` array in LocalStorage.
+
+Rules:
+
+* Participant must be enrolled.
+* Only one feedback per participant per program.
+* Ratings: 1–5.
+* Comments optional.
+
+---
+
+## **3.7 Reports (Client-side Computation)**
+
+Generated dynamically using LocalStorage data.
+
+### Report Types:
+
+1. **Program Summary**
+2. **Defaulters**
+3. **Faculty Performance**
+4. **CSV Export** (Client-generated via Blob API)
+
+---
+
+# **4. Data Model (LocalStorage Schema)**
+
+### **LocalStorage Keys Used:**
+
+```
+users
+courses
+faculties
+programs
+feedbacks
+skills (optional)
+```
+
+---
+
+## **4.1 User**
+
+```
+{
+  id,
+  name,
+  email,
+  passwordHash,
+  role, // ADMIN, COORDINATOR, PARTICIPANT
+  createdAt
+}
+```
+
+---
+
+## **4.2 Course**
+
+```
+{
+  id,
+  code,
+  title,
+  description,
+  durationDays,
+  createdAt
+}
+```
+
+---
+
+## **4.3 Faculty**
+
+```
+{
+  id,
+  name,
+  email,
+  skills: []
+}
+```
+
+---
+
+## **4.4 Training Program**
+
+```
+{
+  id,
+  courseId,
+  coordinatorId,
+  facultyIds: [],
+  startDate,
+  endDate,
+  location,
+  capacity,
+  status, // SCHEDULED, COMPLETED, CANCELLED
+  enrollments: [
+      { participantId, attendanceStatus }
+  ],
+  createdAt
+}
+```
+
+---
+
+## **4.5 Feedback**
+
+```
+{
+  id,
+  programId,
+  participantId,
+  ratings: { q1, q2, q3, overall },
+  comments,
+  submittedAt
+}
+```
+
+---
+
+# **5. Angular Component Structure (Frontend Only)**
+
+## **Authentication**
+
+* login.component
+* register.component
+* auth.guard.ts
+* role.guard.ts
+
+## **Admin Pages**
+
+* Manage Courses
+* Manage Faculties
+* Manage Users
+* View Reports
+
+## **Coordinator Pages**
+
+* Program List
+* Create/Edit Program
+* Enroll Participants
+* Mark Attendance
+* Reports
+
+## **Participant Pages**
+
+* My Programs
+* Submit Feedback
+* View Submitted Feedback
+
+---
+
+# **6. Business Rules (Front-End Validation)**
+
+* Cannot exceed program capacity.
+* Cannot create program with invalid date ranges.
+* Unique feedback per participant per program.
+* Only Admin/Coordinator may edit programs.
+* Only Admin manages courses/faculties.
+* Ratings must be 1–5.
+* Programs soft-deleted using `status: CANCELLED`.
+
+---
+
+# **7. Reports (Client-Side Logic)**
+
+## **Program Feedback Summary**
+
+* Total feedback count
+* Averages per question
+* Overall average
+* Rating distribution
+* Comments list
+
+## **Feedback Defaulters**
+
+Steps:
+
+1. Get participants with attendance = ATTENDED
+2. Get participants who submitted feedback
+3. Difference = defaulters
+
+## **Faculty Performance**
+
+* Average rating across programs they taught.
+
+---
+
+# **8. CSV Export (Browser-Only)**
+
+Frontend uses:
+
+```
+new Blob([...], { type: 'text/csv' })
+```
+
+Downloaded via:
+
+```
+FileSaver.saveAs()
+```
+
+---
+
+# **9. Development Plan**
+
+### Phase 1 — Core Setup
+
+* Angular app setup
+* Services for LocalStorage management
+* User auth + roles
+
+### Phase 2 — Management Features
+
+* Courses + Faculties CRUD
+* Program CRUD
+* Enrolments & Attendance
+
+### Phase 3 — Feedback & Reports
+
+* Feedback forms
+* Summary reports
+* CSV export
+
+### Phase 4 — UI Polish
+
+* Role-based menu
+* Pagination (client-side)
+* Toast notifications
+
+---
+
+# **10. Future Enhancements**
+
+* Sync to cloud DB (optional future)
+* Email notification (not possible in pure frontend)
+* Feedback form designer
+* Faculty portal view
+
+---
+
+# ✅ Your requirements have been fully transformed to a **frontend-only FMS using LocalStorage/SessionStorage**.
+
+If you want, I can also provide:
+
+✔ Full Angular folder structure
+✔ Service code templates for LocalStorage CRUD
+✔ Mock data generator
+✔ Sample UI wireframes
+✔ Complete JSON schema
+
+Just tell me!

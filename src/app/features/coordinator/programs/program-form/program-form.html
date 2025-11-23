@@ -1,0 +1,87 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">{{ isEditMode ? 'Edit' : 'Create' }} Program</h1>
+
+    <form [formGroup]="programForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="courseId">
+                Course
+            </label>
+            <select id="courseId" formControlName="courseId"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">Select a Course</option>
+                <option *ngFor="let course of courses" [value]="course.id">{{ course.title }}</option>
+            </select>
+            <div *ngIf="programForm.get('courseId')?.invalid && programForm.get('courseId')?.touched"
+                class="text-red-500 text-xs italic">
+                Course is required.
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="facultyId">
+                Faculty
+            </label>
+            <select id="facultyId" formControlName="facultyId"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">Select Faculty</option>
+                <option *ngFor="let faculty of faculties" [value]="faculty.id">{{ faculty.name }}</option>
+            </select>
+            <div *ngIf="programForm.get('facultyId')?.invalid && programForm.get('facultyId')?.touched"
+                class="text-red-500 text-xs italic">
+                Faculty is required.
+            </div>
+        </div>
+
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">
+                    Start Date
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="startDate" type="date" formControlName="startDate">
+                <div *ngIf="programForm.get('startDate')?.invalid && programForm.get('startDate')?.touched"
+                    class="text-red-500 text-xs italic">
+                    Start Date is required.
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-3">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">
+                    End Date
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="endDate" type="date" formControlName="endDate">
+                <div *ngIf="programForm.get('endDate')?.invalid && programForm.get('endDate')?.touched"
+                    class="text-red-500 text-xs italic">
+                    End Date is required.
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6" *ngIf="isEditMode">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
+                Status
+            </label>
+            <select id="status" formControlName="status"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="SCHEDULED">SCHEDULED</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="CANCELLED">CANCELLED</option>
+            </select>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit" [disabled]="programForm.invalid">
+                {{ isEditMode ? 'Update' : 'Create' }} Program
+            </button>
+            <a routerLink="/coordinator/programs"
+                class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
