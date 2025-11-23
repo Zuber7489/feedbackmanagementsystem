@@ -1,59 +1,147 @@
-# FeedbackManagementSystem
+# Feedback Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
+A comprehensive Angular-based Feedback Management System for managing training programs, enrollments, and feedback collection.
 
-## Development server
+## Features
 
-To start a local development server, run:
+### Admin Module
+- **Course Management**: Create, edit, and delete training courses
+- **Faculty Management**: Manage faculty members and their skills
+- **User Management**: Add users and manage their roles (Admin, Coordinator, Participant)
+- **Reports**: 
+  - Program Summary Report
+  - Defaulters List (attendance < 75%)
+  - Faculty Performance Report
+  - CSV Export functionality
 
+### Coordinator Module
+- **Program Management**: Schedule and manage training programs
+- **Enrollment Management**: Enroll participants in programs
+- **Attendance Tracking**: Mark attendance for enrolled participants
+
+### Participant Module
+- **Dashboard**: View enrolled programs
+- **Feedback Submission**: Submit feedback for completed programs with ratings and comments
+
+## Tech Stack
+
+- **Framework**: Angular 21
+- **Styling**: TailwindCSS 3
+- **Storage**: LocalStorage & SessionStorage (Frontend-only)
+- **Forms**: Reactive Forms
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v20 or higher)
+- npm
+
+### Installation
+
+1. Clone the repository:
 ```bash
+git clone https://github.com/YOUR_USERNAME/feedbackmanagementsystem.git
+cd feedbackmanagementsystem
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Run the development server:
+```bash
+npm start
+# or
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+4. Open your browser and navigate to `http://localhost:4200/`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Build for Production
 
 ```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+npm run build
+# or
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Default Credentials
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Admin
+- **Email**: `admin@fms.com`
+- **Password**: `admin123`
 
-```bash
-ng test
+### Creating Other Users
+1. Login as Admin
+2. Navigate to "Manage Users"
+3. Click "Add New User"
+4. Fill in the details and select the appropriate role
+
+Or use the registration page at `/register`
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── core/
+│   │   ├── guards/          # Route guards (auth, role)
+│   │   ├── models/          # TypeScript interfaces
+│   │   └── services/        # Services (auth, localStorage)
+│   ├── features/
+│   │   ├── admin/           # Admin module components
+│   │   ├── coordinator/     # Coordinator module components
+│   │   ├── participant/     # Participant module components
+│   │   └── auth/            # Login & Registration
+│   └── app.routes.ts        # Application routing
+└── styles.css               # Global styles with Tailwind
 ```
 
-## Running end-to-end tests
+## Usage Guide
 
-For end-to-end (e2e) testing, run:
+### For Admins
+1. Login with admin credentials
+2. Create courses and faculty members
+3. Add users (Coordinators and Participants)
+4. View reports and analytics
 
-```bash
-ng e2e
-```
+### For Coordinators
+1. Login with coordinator credentials
+2. Create programs (link Course + Faculty + Dates)
+3. Enroll participants in programs
+4. Track attendance
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### For Participants
+1. Login with participant credentials
+2. View enrolled programs
+3. Submit feedback for completed programs
 
-## Additional Resources
+## Features in Detail
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Reports
+- **Program Summary**: Overview of all programs with enrollment counts and average ratings
+- **Defaulters**: List of participants with attendance below 75%
+- **Faculty Performance**: Average ratings and feedback count for each faculty
+- **CSV Export**: Download any report as CSV
+
+### Enrollment Process
+1. Coordinator creates a Program
+2. Coordinator enrolls Participants via Enrollment Management
+3. Coordinator marks attendance
+4. Participants see enrolled programs on their dashboard
+5. Participants submit feedback after program completion
+
+## Contributing
+
+This is a student project. Feel free to fork and modify as needed.
+
+## License
+
+This project is for educational purposes.
+
+## Contact
+
+For questions or issues, please open an issue on GitHub.
